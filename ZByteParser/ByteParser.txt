@@ -1,5 +1,16 @@
-    public static class ByteParser
+    public static class ZByteParser
     {
+        public static string GetRawBits(byte data)
+        {
+            string value = "";
+            int[] Input_Data = new int[8];
+            for (int i = 0; i < 8; i++)
+            {
+                Input_Data[i] = Convert.ToInt32(Getbit(data, i));
+            }
+            value = Input_Data[7] + " " + Input_Data[6] + " " + Input_Data[5] + " " + Input_Data[4] + " " + Input_Data[3] + " " + Input_Data[2] + " " + Input_Data[1] + " " + Input_Data[0] + " ";
+            return value;
+        }
         public static bool Getbit(byte data, int indxOfBit)
         {
             bool value = false;
@@ -14,21 +25,40 @@
             value = (data >> StartIndx) & ((int)Math.Pow(2, (EndIndx - StartIndx + 1)) - 1);
             return value;
         }
-        public static int GetbitsMSB(byte data, int StartIndx, int EndIndx)
+        public static byte GetbitsMSB(byte data, int StartIndx, int EndIndx)
         {
-            int[] Input_Data= new int [8];
-            int[] temp = new int [EndIndx- StartIndx+1];
+            int[] Input_Data = new int[8];
+            int[] temp = new int[EndIndx - StartIndx + 1];
             int value = 0;
             for (int i = 0; i < 7; i++)
             {
                 Input_Data[i] = Convert.ToInt32(Getbit(data, i));
             }
-            for (int i = 0 ; i < EndIndx - StartIndx+1; i++)
+            for (int i = 0; i < EndIndx - StartIndx + 1; i++)
             {
-                temp[EndIndx-i] = Input_Data[i];
+                temp[EndIndx - i] = Input_Data[i];
                 value += temp[EndIndx - i] << (EndIndx - i);
             }
-            return value;
+            return Convert.ToByte(value);
+        }
+        public static byte InsertBitIntoByte(byte input, int index, bool value)
+        {
+            int d = 0;
+            int temp = (int)Math.Pow(2, index);
+            d = ~(temp);
+            input &= (byte)d;
+            if (value)
+            {
+                input += (byte)temp;
+            }
+            return input;
+        }
+        public static byte InsertNumberIntoByte(byte input, int index, int value)
+        {
+            int d = 0;
+            d = value << index;
+            input += Convert.ToByte(d);
+            return input;
         }
         //must be edited
         public static Byte[] Getbyte<T>(byte[] Input_Data, int idx_Destination, T Value, out int N_idx)
@@ -104,20 +134,5 @@
 
             N_idx = idx_Destination;
             return Input_Data;
-        }
-        public static byte InsertBitIntoByte(byte OutPut, int index, bool value)
-        {
-            int d = 0;
-            d = Convert.ToByte(value);
-            d = d << index;
-            OutPut += Convert.ToByte(d);
-            return OutPut;
-        }
-        public static byte InsertNumberIntoByte(byte OutPut, int index, int value)
-        {
-            int d = 0;
-            d = value << index;
-            OutPut += Convert.ToByte(d);
-            return OutPut;
         }
     }

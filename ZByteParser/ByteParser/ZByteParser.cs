@@ -12,12 +12,11 @@ namespace ByteParser
         {
             string value = "";
             int[] Input_Data = new int[8];
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
             {
                 Input_Data[i] = Convert.ToInt32(Getbit(data, i));
             }
             value = Input_Data[7] + " " + Input_Data[6] + " " + Input_Data[5] + " " + Input_Data[4] + " " + Input_Data[3] + " " + Input_Data[2] + " " + Input_Data[1] + " " + Input_Data[0] + " ";
-
             return value;
         }
         public static bool Getbit(byte data, int indxOfBit)
